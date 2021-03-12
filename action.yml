@@ -10,6 +10,9 @@ inputs:
   project-id:
     description: project ID
     required: true
+  owner-name:
+    description: owner name
+    required: false
  #   default: 
 outputs:
   updatedStories:

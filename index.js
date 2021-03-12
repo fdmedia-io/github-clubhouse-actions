@@ -25,10 +25,13 @@ async function run() {
                 core.getInput('endStateName')
             );
         } else if (eventName === "issues") {
+            console.log(payload.issue);
+            console.log(payload.issue.milestone);
             await ch.createStory(
                 payload.issue.number,
                 payload.issue.title,
-                payload.issue.body
+                payload.issue.body,
+                [payload.issue.html_url, payload.issue.milestone.html_url]
             );
         }
         else if (eventName === "milestone") {

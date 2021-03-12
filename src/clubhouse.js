@@ -250,18 +250,28 @@ async function transitionStories(
     return updatedStoryNames;
 }
 
-async function createStory(id, title, description) {
+async function getMemberId(name) {
+    let members = await client.listMembers();
+    return members.filter(m => m.profile.name == name)[0].id;
+}
+
+async function createStory(id, title, description, links) {
+    let memberId = await getMemberId(core.getInput('owner-name'));
     let params = {
-        name: title,
         project_id: core.getInput('project-id'),
+        owner_ids: [memberId],
+        name: title,
         description: description,
+        external_links: links
     };
     const story = await client.createStory(params);
     console.log('add story "' + title + '" successful');
 }
 
 async function createEpic(id, title, description, created_at, due_on) {
+    let memberId = await getMemberId(core.getInput('owner-name'));
     let params = {
+        owner_ids: [memberId],
         name: title,
         description: description,
         created_at: created_at,
