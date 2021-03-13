@@ -1929,13 +1929,14 @@ async function run() {
                 core.getInput('endStateName')
             );
         } else if (eventName === "issues") {
-            console.log(payload.issue);
-            console.log(payload.issue.milestone);
+            let links = payload.issue.milestone ?
+                [payload.issue.html_url, payload.issue.milestone.html_url] :
+                [payload.issue.html_url];
             await ch.createStory(
                 payload.issue.number,
                 payload.issue.title,
                 payload.issue.body,
-                [payload.issue.html_url, payload.issue.milestone.html_url]
+                links
             );
         }
         else if (eventName === "milestone") {
@@ -7662,6 +7663,10 @@ async function transitionStories(
 
 async function getMemberId(name) {
     let members = await client.listMembers();
+    if(members.filter(m => m.profile.name == name).length==0){
+        console.log('member "'+name+'" not found');
+        return null;
+    }
     return members.filter(m => m.profile.name == name)[0].id;
 }
 

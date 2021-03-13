@@ -252,6 +252,10 @@ async function transitionStories(
 
 async function getMemberId(name) {
     let members = await client.listMembers();
+    if(members.filter(m => m.profile.name == name).length==0){
+        console.log('member "'+name+'" not found');
+        return null;
+    }
     return members.filter(m => m.profile.name == name)[0].id;
 }
 
